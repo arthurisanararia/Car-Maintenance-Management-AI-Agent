@@ -102,19 +102,20 @@ def main():
 
     sub = p.add_subparsers(dest="cmd", required=True)
 
+    safe_dt_format = DT_FORMAT.replace("%", "%%")
     p_run = sub.add_parser("run", help="Run simulation + fuzzy inference, append to CSV (timestamp-based).")
     p_run.add_argument("--csv", default="data/telemetry.csv")
     p_run.add_argument("--sample-sec", type=float, default=10.0)
     p_run.add_argument("--print-every", type=int, default=1)
     p_run.add_argument("--steps", type=int, default=120, help="Total samples; set -1 for infinite.")
     p_run.add_argument("--seed", type=int, default=42)
-    p_run.add_argument("--start", default="2026-05-22 08:00:00", help=f'Start time format "{DT_FORMAT}"')
+    p_run.add_argument("--start", default="2026-05-22 08:00:00", help=f'Start time format "{safe_dt_format}"')
     p_run.add_argument("--clock-step-sec", type=float, default=600.0, help="Advance logged time per sample (default 10 min).")
 
     p_plot = sub.add_parser("plot", help="Plot by request from CSV using datetime range.")
     p_plot.add_argument("--csv", default="data/telemetry.csv")
-    p_plot.add_argument("--from", dest="dt_from", type=str, default=None, help=f'From "{DT_FORMAT}"')
-    p_plot.add_argument("--to", dest="dt_to", type=str, default=None, help=f'To "{DT_FORMAT}"')
+    p_plot.add_argument("--from", dest="dt_from", type=str, default=None, help=f'From "{safe_dt_format}"')
+    p_plot.add_argument("--to", dest="dt_to", type=str, default=None, help=f'To "{safe_dt_format}"')
     p_plot.add_argument("--show", action="store_true")
     p_plot.add_argument("--save", action="store_true")
     p_plot.add_argument("--out", default=None)
